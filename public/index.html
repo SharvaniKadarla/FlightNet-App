@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Airline Explorer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <header style="text-align: center; padding: 20px 0; background-color: #f0f0f0;">
+        <h1 style="margin: 0; font-size: 2.5em; color: #003366;">FlightNet</h1>
+        <p style="font-size: 1.2em; color: #555;">Visualizing Global Air Connectivity</p>
+      </header>
+
+<!-- Feature 1: A user selects a country to view all airlines and the airports in the country selected.  -->
+<section>
+  <h2>🌍 Airlines & Airports by Country ✈️</h2>
+  <label for="countrySelect">Select a Country:</label>
+  <select id="countrySelect">
+    <option value="">-- Choose a country --</option>
+  </select>
+  <button onclick="loadAirlinesAndAirports()">🌐 Show Airlines & Airports</button>
+
+  <h3>✈️ Airlines</h3>
+  <ul id="airlinesList"></ul>
+
+  <h3>🏢 Airports</h3>
+  <ul id="airportsList"></ul>
+</section>
+
+<!-- Feature 2: A user selects an airline to view the airports and/or routes the airline selected flies.  -->
+<section>
+  <h2>🌐 Airline Routes ✈️</h2>
+  <label for="airlineSelect">Select Airline:</label>
+  <select id="airlineSelect">
+    <option value="">-- Choose an airline --</option>
+  </select>
+  <button onclick="viewAirlineRoutes()">🚀 Show Routes</button>
+
+  <h3>📍 Routes</h3>
+  <ul id="routeResults"></ul>
+</section>
+
+<!-- Feature 3: A user selects an airport to view the details about the airport (e.g., name, airport codes, current weather, etc.).  -->
+<section>
+  <h2>✈️ Airport Information 🌍</h2>
+  <label for="icao-input">Search Airport (IATA/ICAO Code):</label>
+  <input list="airport-codes" id="icao-input" placeholder="Start typing..." />
+  <datalist id="airport-codes"></datalist>
+  <button id="search-btn">🔍 Search</button>
+
+  <div id="airport-details" style="display:none;">
+    <h3>🏢 Airport Details</h3>
+    <p><strong>Name:</strong> <span id="airport-name"></span></p>
+    <p><strong>City:</strong> <span id="airport-city"></span></p>
+    <p><strong>Country:</strong> <span id="airport-country"></span></p>
+    <p><strong>IATA Code:</strong> <span id="airport-iata"></span></p>
+    <p><strong>ICAO Code:</strong> <span id="airport-icao"></span></p>
+    <p><strong>Latitude:</strong> <span id="airport-latitude"></span></p>
+    <p><strong>Longitude:</strong> <span id="airport-longitude"></span></p>
+    <h4>Current Weather</h4>
+    <p><strong>Maximum Temperature:</strong> <span id="max-temp"></span>°C</p>
+    <p><strong>Minimum Temperature:</strong> <span id="min-temp"></span>°C</p>
+  </div>
+
+  <div id="error-message" style="display: none; color: red;">
+    <p id="error-text"></p>
+  </div>
+</section>
+
+<!-- Feature 4: A user selects an airport to view the routes originating from the airport selected.  -->
+<section>
+  <h2>🌍 Routes from Departure Airport ✈️</h2>
+  <label for="departure-airport">Select Departure Airport:</label>
+  <select id="departure-airport"></select>
+  <button id="search-routes-btn">🔍 Search Routes</button>
+
+  <div id="routes-details" style="display:none; margin-top: 20px;">
+    <h3>Arrival Airports 🛬</h3>
+    <ul id="arrival-airports-list"></ul>
+  </div>
+
+  <div id="error-message" style="display:none; color: red;">
+    <p id="error-text"></p>
+  </div>
+</section>
+
+<!-- Feature 5: A user selects an airport to view the routes arriving at the airport selected.  -->
+<section>
+  <h2>🌍 Routes Arriving at an Airport ✈️</h2>
+  <label for="arrival-airport">Select Arrival Airport:</label>
+  <select id="arrival-airport">
+    <option value="">-- Select an airport --</option>
+  </select>
+  <button id="search-arrivals-btn">🔍 Search Routes</button>
+
+  <div id="routes-details">
+    <h3>Departure Airports 🛫</h3>
+    <ul id="departure-airports-list"></ul>
+  </div>
+
+  <div id="error-message" style="display:none; color: red;">
+    <p id="error-text"></p>
+  </div>
+</section>
+
+<!-- Feature 6: A user selects an airport to view all airlines flying to/from the airports selected. -->
+<section>
+  <h2>✈️ Airlines Serving an Airport 🌍</h2>
+  <label for="airport-select">Select an Airport:</label>
+  <select id="airport-select">
+    <option value="">-- Choose an airport --</option>
+  </select>
+  <button id="fetch-airlines-btn">🔍 Show Airlines</button>
+
+  <h3>Airlines:</h3>
+  <ul id="airline-list"></ul>
+</section>
+
+<!-- Feature 7: A user selects a pair of the airports to view all airlines flying between the airports selected.  -->
+<section>
+  <h2>🌍 Routes Between Two Airports ✈️</h2>
+  <label for="airport1Routes">Select First Airport:</label><br>
+  <select id="airport1Routes">
+    <option value="">-- Choose an airport --</option>
+  </select><br><br>
+
+  <label for="airport2Routes">Select Second Airport:</label><br>
+  <select id="airport2Routes" disabled>
+    <option value="">-- Choose an airport --</option>
+  </select><br><br>
+
+  <button id="getRoutesBtn" disabled>🔍 Get Routes</button>
+  <div id="routesResult"></div>
+</section>
+
+<!-- Feature 8: A user selects a pair of the airports to view the distance between the airports selected. s -->
+<section>
+  <h2>🌐 Distance Between Two Airports ✈️</h2>
+  <label for="airportFrom">Select the First Airport:</label><br>
+  <select id="airportFrom">
+    <option value="">-- Choose an airport --</option>
+  </select><br><br>
+
+  <label for="airportTo">Select the Second Airport:</label><br>
+  <select id="airportTo">
+    <option value="">-- Choose an airport --</option>
+  </select><br><br>
+
+  <button id="getDistanceButton">📏 Get Distance</button>
+
+  <div id="distanceResult" style="display:none;">
+    <h3>📍 Distance Result (Kilometers):</h3>
+    <p id="distanceText"></p>
+  </div>
+</section>
+
+<!-- Feature 9: Find the nearest airport to the current location (via browser geolocation) -->
+<section>
+  <h2>🌐 Find the Nearest Airport ✈️</h2>
+  <p>Click the button to detect your location and find the closest airport.</p>
+  <button onclick="findNearestAirport()">📍 Find Nearest Airport</button>
+  <div id="result"></div>
+</section>
+
+<!-- Feature 10: When a user selects an aircraft/plane type, show only routes that use that plane type. -->
+<section>
+  <h2>🔧 Filter Routes by Aircraft/Plane Type</h2>
+  <label for="plane-select">Select Aircraft/Plane Type:</label>
+  <select id="plane-select">
+    <option value="">-- Choose an aircraft/plane --</option>
+  </select>
+  <button onclick="filterRoutesByPlane()">Show Routes</button>
+
+  <div id="filtered-routes" style="margin-top: 20px;"></div>
+</section>
+
+<!-- Interactive Map using Leaflet.js -->
+<section>
+  <h2>🗺️ Interactive Airport Map</h2>
+  <p>Select a country to view airport locations on the map.</p>
+  <div id="map" style="height: 500px; width: 100%; margin-top: 10px;"></div>
+</section>
+
+<!-- Leaflet.js CDN -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="client.js"></script>
+</body>
+</html>
