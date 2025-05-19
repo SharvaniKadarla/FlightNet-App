@@ -1,5 +1,5 @@
 {
-    "name": "flightnet-app",
+    "name": "flightnet_app",
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
