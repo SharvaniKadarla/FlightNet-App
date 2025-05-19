@@ -1,5 +1,5 @@
 {
-    "name": "cs612_hw2",
+    "name": "flightnet-app",
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
