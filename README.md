@@ -6,30 +6,20 @@ A full-stack web app to explore airlines, airports, countries, planes and routes
 
 ## 📂 Project Structure
 
+```text
 FlightNet-App/
-
 │
-
 ├── public/ # Frontend UI
-
 │ ├── index.html # Main user interface of the website.
-
 │ ├── client.js # Client-side logic and event handling.
-
 │ └── styles.css # Styling for layout and responsiveness.
-
 │
-
 ├── server.js # Express backend with all API logic.
-
 ├── package.json # Node.js project configuration
-
 ├── package-lock.json # Auto-generated npm dependency lock
-
 ├── node_modules/ # Auto-generated folder containing installed dependencies (not committed to repo)
-
 └── README.md # Project documentation
-
+```
 
 ### Note on `node_modules`
 
